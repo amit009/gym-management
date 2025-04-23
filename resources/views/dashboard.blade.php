@@ -4,7 +4,7 @@
             <div class="">
                 <div class="x_content">
                     <!-- top tiles -->
-                    <div class="row" style="display: inline-block; width:100%;" >
+                    <!-- <div class="row" style="display: inline-block; width:100%;" >
                         <div class="tile_count">
                             <div class="col-md-2 col-sm-4  tile_stats_count">
                                 <span class="count_top"><i class="fa fa-user"></i> Total Members</span>
@@ -37,7 +37,35 @@
                                 <span class="count_bottom"><i class="green"><i class="fa fa-sort-asc"></i>34% </i> From last Week</span>
                             </div>
                         </div>
+                    </div> -->
+
+                    <div class="x_content_box">
+                      <a class="btn btn-app">
+                        <span class="badge bg-red">6</span>
+                        <i class="fa fa-users"></i> Total Members
+                      </a>
+                      <a class="btn btn-app">
+                        <i class="fa fa-users"></i> Active Members
+                      </a>
+                      <a class="btn btn-app">
+                        <span class="badge bg-green">211</span>
+                        <i class="fa fa-male"></i> Total Males
+                      </a>
+                      <a class="btn btn-app">
+                        <span class="badge bg-orange">32</span>
+                        <i class="fa fa-female"></i> Total Females
+                      </a>
+                      <a class="btn btn-app">
+                        <span class="badge bg-orange">12</span>
+                        <i class="fa fa-envelope"></i> Total Staff
+                      </a>
+                      <a class="btn btn-app">
+                        <span class="badge bg-blue">102</span>
+                        <i class="fa fa-wrench"></i> Total Equipments
+                      </a>
                     </div>
+
+
                     <!-- /top tiles -->
                     <div class="row">
                         <div class="col-md-12 col-sm-12 ">        

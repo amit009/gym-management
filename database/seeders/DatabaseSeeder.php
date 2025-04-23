@@ -34,5 +34,13 @@ class DatabaseSeeder extends Seeder
 
         $trainer = Role::findByName('trainer');
         $trainer->givePermissionTo('view workouts');
+
+        $this->call([
+            ServiceSeeder::class,
+        ]);
+
+        $this->call([
+            TrainerSeeder::class,
+        ]);
     }
 }

@@ -1,0 +1,158 @@
+<x-app-layout>    
+    <div class="page-title">
+        <div class="title_left">
+            <h3>{{ __('Create Member') }}</h3>
+        </div>
+
+        <div class="title_right">
+            <div class="col-md-5 col-sm-5  form-group pull-right top_search">
+                <!-- <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Search for...">
+                    <span class="input-group-btn">
+                        <button class="btn btn-default" type="button">Go!</button>
+                    </span>
+                </div> -->
+            </div>
+        </div>
+    </div>
+
+    <div class="clearfix"></div>
+   
+    <div class="row">
+        <div class="col-md-12 col-sm-12 ">
+            <div class="x_panel">
+                <div class="x_title">
+                    <a href="{{ route('members') }}" class="btn btn-round btn-info btn-sm">List Members</a>
+                    <ul class="nav navbar-right panel_toolbox">
+                        <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
+                        <li><a class="close-link"><i class="fa fa-close"></i></a></li>
+                    </ul>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+                    <br />
+                    @if (session('success'))
+                        <div class="alert alert-success">
+                            {{ session('success') }}
+                        </div>
+                    @endif
+
+                    @if (session('error'))
+                        <div class="alert alert-danger">
+                            {{ session('error') }}
+                        </div>
+                    @endif
+                    <form action="{{ route('store') }}" method="POST" enctype="multipart/form-data" data-parsley-validate class="form-horizontal form-label-left">
+                        @csrf
+                        <div class="item form-group">
+                            <label class="col-form-label col-md-3 col-sm-3 label-align" for="name">Gender <span class="required">*</span></label>
+                            <div class="col-md-6 col-sm-6 ">
+                                <div class="genders-wrapper">
+                                    <div class="genders">
+                                        <label for="genderM">Male:</label> <input type="radio" class="flat" name="gender" id="genderM" value="Male" checked="" required />
+                                    </div>    
+                                    <div class="genders">
+                                        <label for="genderF">Female:</label> <input type="radio" class="flat" name="gender" id="genderF" value="Female" />
+                                    </div>    
+                                    <div class="genders">
+                                        <label for="genderO">Other:</label> <input type="radio" class="flat" name="gender" id="genderO" value="Other" />
+                                    </div>
+                                    @error('gender')<span class="error">{{$message}}</span>@enderror
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="item form-group">
+                            <label class="col-form-label col-md-3 col-sm-3 label-align" for="name">Name <span class="required">*</span></label>
+                            <div class="col-md-6 col-sm-6 ">
+                                <input type="text" name="name" class="form-control @error('name')required-field @enderror">
+                                @error('name')<span class="error">{{$message}}</span>@enderror
+                            </div>
+                        </div>
+                        <div class="item form-group">
+                            <label class="col-form-label col-md-3 col-sm-3 label-align" for="email">Email <span class="required">*</span></label>
+                            <div class="col-md-6 col-sm-6 ">
+                                <input type="email" name="email" class="form-control @error('email')required-field @enderror">
+                                @error('email')<span class="error">{{$message}}</span>@enderror
+                            </div>
+                        </div>
+                        <div class="item form-group">
+                            <label class="col-form-label col-md-3 col-sm-3 label-align" for="phone">Contact Number <span class="required">*</span></label>
+                            <div class="col-md-6 col-sm-6 ">
+                                <input type="tel" name="contact_number" class="form-control @error('contact_number')required-field @enderror">
+                                @error('contact_number')<span class="error">{{$message}}</span>@enderror
+                            </div>
+                        </div>
+                        
+                        <div class="item form-group">
+                            <label class="col-form-label col-md-3 col-sm-3 label-align" for="phone">Registration Date <span class="required">*</span></label>
+                            <div class="col-md-6 col-sm-6 ">
+                                <input type="date" name="registration_date" class="form-control @error('registration_date')required-field @enderror" onclick="this.showPicker()">
+                                @error('registration_date')<span class="error">{{$message}}</span>@enderror
+                            </div>
+                        </div>
+
+                        <div class="item form-group">
+                            <label class="col-form-label col-md-3 col-sm-3 label-align" for="plan">Plan <span class="required">*</span></label>
+                            <div class="col-md-6 col-sm-6 ">
+                                <select id="plan" name="plan" class="form-control"> 
+                                    <option value="monthly" data-month="1">Monthly</option> 
+                                    <option value="quarterly" data-month="3">Quarterly</option> 
+                                    <option value="half-yearly" data-month="6">Half Yearly</option> 
+                                    <option value="yearly" data-month="12">Yearly</option> 
+                                </select>
+                                @error('plan')<span class="error">{{$message}}</span>@enderror
+                            </div>
+                        </div>
+
+                        <div class="item form-group">
+                            <label class="col-form-label col-md-3 col-sm-3 label-align" for="category">Service <span class="required">*</span>
+                            </label>
+                            <div class="col-md-6 col-sm-6 ">
+                                <!-- <select id="service" name="service_id" class="select2_multiple form-control" multiple="multiple">
+                                    @foreach($services as $service)
+                                        <option value="{{ $service->id }}">{{ $service->name }} - <small>{{$service->fee}}</small> </option>
+                                    @endforeach
+                                </select> -->
+                                @foreach($services as $service)
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" name="service_id" class="flat" value="{{ $service->id }}" data-amount="{{$service->fee}}"> {{ $service->name }} - <small>{{env('CURRENCY')}}{{$service->fee}}/month</small>
+                                    </label>
+                                </div>
+                                @endforeach
+                                @error('service_id')<span class="error">{{$message}}</span>@enderror
+                            </div>
+                        </div>
+
+                        <div class="item form-group">
+                            <label class="col-form-label col-md-3 col-sm-3 label-align" for="name">Amount</label>
+                            <div class="col-md-6 col-sm-6 ">
+                                <input type="text" name="amount" class="form-control has-feedback-left" readonly="readonly">
+                                <span class="fa fa-inr form-control-feedback left" aria-hidden="true"></span>
+                            </div>
+                        </div>
+
+                        <div class="item form-group">
+                            <label for="middle-name" class="col-form-label col-md-3 col-sm-3 label-align">Address</label>
+                            <div class="col-md-6 col-sm-6 ">
+                                <textarea name="address" class="form-control" @error('address')required-field @enderror></textarea>
+                                @error('address')<span class="error">{{$message}}</span>@enderror
+                            </div>
+                        </div>
+                            
+                         
+                        <div class="ln_solid"></div>
+                        <div class="item form-group">
+                            <div class="col-md-6 col-sm-6 offset-md-3">
+                                <button type="submit" class="btn btn-success">Create</button>
+                                <button class="btn btn-primary" type="button">Cancel</button>
+                                <button class="btn btn-primary" type="reset">Reset</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</x-app-layout>
