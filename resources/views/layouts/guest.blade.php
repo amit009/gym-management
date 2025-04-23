@@ -18,12 +18,19 @@
         <link href="{{ asset('vendors/nprogress/nprogress.css') }}" rel="stylesheet">
         <link href="{{ asset('vendors/animate.css/animate.min.css') }}" rel="stylesheet">
         <link href="{{ asset('build/css/custom.min.css') }}" rel="stylesheet">
+        <link href="{{ asset('build/css/styles.css') }}" rel="stylesheet"> 
 
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
     <body class="login">
         <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gray-100">
+            <div class="text-sm text-gray-600 logo-wrapper">
+                <h1>Admin Login</h1>
+                <!-- <a href=" ">
+                    <img src="{{ asset('build/images/muscle.png') }}" alt="Logo" class="w-32 h-32">
+                </a> -->
+            </div>
             <div class="w-full sm:max-w-md mt-6 px-6 py-4 bg-white shadow-md overflow-hidden sm:rounded-lg">
                 {{ $slot }}
             </div>

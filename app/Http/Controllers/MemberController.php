@@ -19,7 +19,7 @@ class MemberController extends Controller
      */
     public function index()
     { 
-        $members = Member::with('memberFees')->latest()->paginate(5);
+        $members = Member::with('memberFees')->latest()->paginate(10);
 
         //return $members;
         
@@ -182,9 +182,9 @@ class MemberController extends Controller
                     ->orWhere('phone', 'LIKE', "%{$request->q}%")
                     ->orWhere('email', 'LIKE', "%{$request->q}%")
                     ->latest()
-                    ->paginate(5); 
+                    ->paginate(10); 
             } else {
-                $members = Member::with('memberFees')->latest()->paginate(5);
+                $members = Member::with('memberFees')->latest()->paginate(10);
             }       
     
             // Return partial view for AJAX
