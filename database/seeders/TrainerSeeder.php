@@ -13,7 +13,7 @@ class TrainerSeeder extends Seeder
      */
     public function run(): void
     {
-        $trainers = [
+        /* $trainers = [
             [
                 'first_name' => 'John',
                 'last_name' => 'Doe',
@@ -42,6 +42,8 @@ class TrainerSeeder extends Seeder
 
         foreach ($trainers as $trainer) {
             Trainer::create($trainer);
-        }
+        } */
+
+        Trainer::factory()->count(10)->create();
     }
 }

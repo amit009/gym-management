@@ -41,27 +41,40 @@
 
                     <div class="x_content_box">
                       <a class="btn btn-app">
-                        <span class="badge bg-red">6</span>
+                        <span class="badge bg-red">{{$members}}</span>
                         <i class="fa fa-users"></i> Total Members
                       </a>
                       <a class="btn btn-app">
+                        <span class="badge bg-green">{{$activeMembers}}</span>
                         <i class="fa fa-users"></i> Active Members
                       </a>
                       <a class="btn btn-app">
-                        <span class="badge bg-green">211</span>
+                        <span class="badge bg-green">{{$maleMembers}}</span>
                         <i class="fa fa-male"></i> Total Males
                       </a>
                       <a class="btn btn-app">
-                        <span class="badge bg-orange">32</span>
+                        <span class="badge bg-orange">{{$femaleMembers}}</span>
                         <i class="fa fa-female"></i> Total Females
                       </a>
                       <a class="btn btn-app">
-                        <span class="badge bg-orange">12</span>
+                        <span class="badge bg-orange">0</span>
                         <i class="fa fa-envelope"></i> Total Staff
                       </a>
                       <a class="btn btn-app">
-                        <span class="badge bg-blue">102</span>
+                        <span class="badge bg-blue">0</span>
                         <i class="fa fa-wrench"></i> Total Equipments
+                      </a>
+                      <a class="btn btn-app">
+                        <span class="badge bg-blue">{{$services}}</span>
+                        <i class="fa fa-server"></i> Services
+                      </a>
+                      <a class="btn btn-app">
+                        <span class="badge bg-blue">{{$trainers}}</span>
+                        <i class="fa fa-user-secret"></i> Trainers
+                      </a>
+                      <a class="btn btn-app">
+                        <span class="badge bg-blue">{{$users}}</span>
+                        <i class="fa fa-user-secret"></i> Users
                       </a>
                     </div>
 

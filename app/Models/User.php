@@ -46,4 +46,13 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function getRoleBadgeClass(string $rolename): string {
+        return match($rolename) {
+            'admin'     =>  'primary',
+            'trainer'   =>  'warning',
+            'member'    =>  'danger',
+            default     =>  'secondary', 
+        };
+    }
 }

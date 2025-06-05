@@ -4,8 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Models\MemberFee;
-use app\Models\Service;
-use app\Models\Trainer;
+use App\Models\Service;
+use App\Models\Trainer;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -40,10 +40,10 @@ class Member extends Model
         return "+91-{$value}";
     } */
 
-    public function setPhoneAttribute($value) {
+    /* public function setPhoneAttribute($value) {
        // $this->attributes['phone'] = preg_replace('/\D/', '', $value);
-        $this->attributes['phone'] =  "91".$value;
-    }
+        //$this->attributes['phone'] =  "91".$value;
+    } */
 
     public function getstatusBadgeClassAttribute() {
         return match ($this->status) {
@@ -55,8 +55,8 @@ class Member extends Model
     }
 
     public function routeNotificationForVonage($notification)
-    {
-        return $this->phone;
+    {        
+        return '91'.$this->phone;
     }
 
     public function memberFees()
@@ -78,17 +78,7 @@ class Member extends Model
     public function setServiceIdsAttribute($value)
     {
         $this->attributes['service_ids'] = json_encode($value);
-    }
-    public function getProfilePhotoAttribute($value)
-    {
-        return $value ? asset('storage/' . $value) : null;
-    }
-    public function setProfilePhotoAttribute($value)
-    {
-        if ($value) {
-            $this->attributes['profile_photo'] = $value->store('profile_photos', 'public');
-        }
-    }
+    }     
     public function getFullNameAttribute()
     {
         return "{$this->first_name} {$this->last_name}";

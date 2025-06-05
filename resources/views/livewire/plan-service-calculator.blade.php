@@ -18,7 +18,7 @@
             @foreach($services as $key => $service)
             <div class="checkbox">
                 <label>
-                    <input wire:model="service" type="checkbox" name="service_id" class="flat" value="{{ $key }}" data-amount="{{$service}}"> {{ $key }} - <small>{{env('CURRENCY')}}{{$service}}/month</small>
+                    <input wire:model="service" type="checkbox" name="service_id" class="flat" value="{{ $key }}" data-amount="{{$service}}"> {{ $key }} - <small>{{config('app.currency')}}{{$service}}/month</small>
                 </label>
             </div>
             @endforeach

@@ -5,13 +5,8 @@
         </div>
 
         <div class="title_right">
-            <div class="col-md-5 col-sm-5  form-group pull-right top_search">
-                <!-- <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Search for...">
-                    <span class="input-group-btn">
-                        <button class="btn btn-default" type="button">Go!</button>
-                    </span>
-                </div> -->
+            <div class="pull-right">
+                <a href="{{ route('members') }}" class="btn btn-round btn-info btn-sm">All Members</a>
             </div>
         </div>
     </div>
@@ -21,8 +16,7 @@
     <div class="row">
         <div class="col-md-12 col-sm-12 ">
             <div class="x_panel">
-                <div class="x_title">
-                    <a href="{{ route('member.lists') }}" class="btn btn-round btn-info btn-sm">List Members</a>
+                <div class="x_title"> 
                     <ul class="nav navbar-right panel_toolbox">
                         <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
                         <li><a class="close-link"><i class="fa fa-close"></i></a></li>
@@ -30,21 +24,9 @@
                     <div class="clearfix"></div>
                 </div>
                 <div class="x_content">
-                    <br />
-                    @if (session('success'))
-                        <div class="alert alert-success">
-                            {{ session('success') }}
-                        </div>
-                    @endif
-
-                    @if (session('error'))
-                        <div class="alert alert-danger">
-                            {{ session('error') }}
-                        </div>
-                    @endif
-                     
+                    @include('shared.notifications')                     
                     <!-- Smart Wizard -->
-                    <form action="{{ route('member.store') }}" method="POST" class="form-horizontal form-label-left step-1-form">
+                    <form action="{{ route('member.store') }}" method="POST" class="form-horizontal form-label-left step-1-form" enctype="multipart/form-data">
                         @csrf 
                         <div id="wizard" class="form_wizard wizard_horizontal">
                             <ul class="wizard_steps">
@@ -152,12 +134,6 @@
                                         <textarea name="address" id="address" class="form-control"></textarea>
                                     </div>
                                 </div>
-                                <div class="form-group row">
-                                    <label class="col-form-label col-md-3 col-sm-3 label-align" for="upload-pic">Upload Profile Photo </label>
-                                    <div class="col-md-6 col-sm-6 ">
-                                        <input type="file" name="profile_photo" id="upload-pic" accept="image/*"> 
-                                    </div>
-                                </div>
                                 <div class="row form-group">
                                     <label class="col-form-label col-md-3 col-sm-3 label-align" for="status">Status</label>
                                     <div class="col-md-6 col-sm-6 ">
@@ -169,6 +145,12 @@
                                         @error('plan')<span class="error">{{$message}}</span>@enderror
                                     </div>
                                 </div> 
+                                <div class="form-group row">
+                                    <label class="col-form-label col-md-3 col-sm-3 label-align" for="upload-pic">Upload Profile Photo </label>
+                                    <div class="col-md-6 col-sm-6 ">
+                                        <input type="file" name="profile_photo" id="upload-pic" accept="image/*"> 
+                                    </div>
+                                </div>                                
                             </div>
                             <div id="step-3">         
                                 <div class="row form-group">
@@ -195,7 +177,7 @@
                                         @foreach($services as $service)
                                         <div class="checkbox">
                                             <label>
-                                                <input type="checkbox" name="services[]" class="flat services" value="{{ $service->id }}" data-amount="{{$service->fee}}"> {{ $service->name }} - <small>{{env('CURRENCY')}}{{$service->fee}}/month</small>
+                                                <input type="checkbox" name="services[]" class="flat services" value="{{ $service->id }}" data-amount="{{$service->fee}}"> {{ $service->name }} - <small>{{config('app.currency')}}{{$service->fee}}/month</small>
                                             </label>
                                         </div>
                                         @endforeach
@@ -280,6 +262,6 @@ $(document).ready(function() {
 
         let finalTotal = baseTotal * planMultiplier;
         $('input[name="amount"]').val(finalTotal.toFixed(2));
-    }
+    }    
 });
 </script>

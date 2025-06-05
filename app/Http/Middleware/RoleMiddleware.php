@@ -21,6 +21,10 @@ class RoleMiddleware
             abort(403, 'Unauthorized.');
         }
 
+        if(!Auth::guard('web')->check()){
+            return redirect()->route('auth.login')->with('error',__('Please login first!'));
+        }
+
         return $next($request);
     }
 }

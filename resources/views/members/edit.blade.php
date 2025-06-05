@@ -5,13 +5,8 @@
         </div>
 
         <div class="title_right">
-            <div class="col-md-5 col-sm-5  form-group pull-right top_search">
-                <!-- <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Search for...">
-                    <span class="input-group-btn">
-                        <button class="btn btn-default" type="button">Go!</button>
-                    </span>
-                </div> -->
+            <div class="pull-right">
+                <a href="{{ route('members') }}" class="btn btn-round btn-info btn-sm">All Members</a>
             </div>
         </div>
     </div>
@@ -22,29 +17,17 @@
         <div class="col-md-12 col-sm-12 ">
             <div class="x_panel">
                 <div class="x_title">
-                    <a href="{{ route('member.lists') }}" class="btn btn-round btn-info btn-sm">List Members</a>
+                    
                     <ul class="nav navbar-right panel_toolbox">
                         <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
                         <li><a class="close-link"><i class="fa fa-close"></i></a></li>
                     </ul>
                     <div class="clearfix"></div>
                 </div>
-                <div class="x_content">
-                    <br />
-                    @if (session('success'))
-                        <div class="alert alert-success">
-                            {{ session('success') }}
-                        </div>
-                    @endif
-
-                    @if (session('error'))
-                        <div class="alert alert-danger">
-                            {{ session('error') }}
-                        </div>
-                    @endif
-                     
+                <div class="x_content">                    
+                    @include('shared.notifications')                     
                     <!-- Smart Wizard -->
-                    <form action="{{ route('member.update', $member->id) }}" method="POST" class="form-horizontal form-label-left step-1-form">
+                    <form action="{{ route('member.update', $member->id) }}" method="POST" class="form-horizontal form-label-left step-1-form" enctype="multipart/form-data">
                         @csrf
                         @method('PUT') 
                         <div id="wizard" class="form_wizard wizard_horizontal">
@@ -74,13 +57,13 @@
                                     <div class="col-md-6 col-sm-6 ">
                                         <div class="genders-wrapper">
                                             <div class="genders">
-                                                <label for="genderM">Male:</label> <input type="radio" class="flat" name="gender" id="genderM" value="male" @if($member->gender == 'male') checked="" @endif required />
+                                                <label for="genderM">Male:</label> <input type="radio" class="flat" name="gender" id="genderM" value="male" @checked(old('male', $member->gender) == 'male') required />
                                             </div>    
                                             <div class="genders">
-                                                <label for="genderF">Female:</label> <input type="radio" class="flat" name="gender" id="genderF" value="female" @if($member->gender == 'female') checked="" @endif />
+                                                <label for="genderF">Female:</label> <input type="radio" class="flat" name="gender" id="genderF" value="female" @checked(old('female', $member->gender) == 'female') />
                                             </div>    
                                             <div class="genders">
-                                                <label for="genderO">Other:</label> <input type="radio" class="flat" name="gender" id="genderO" value="other" @if($member->gender == 'other') checked="" @endif />
+                                                <label for="genderO">Other:</label> <input type="radio" class="flat" name="gender" id="genderO" value="other" @checked(old('other', $member->gender) == 'other') />
                                             </div>
                                             @error('gender')<span class="error">{{$message}}</span>@enderror
                                         </div>
@@ -152,13 +135,7 @@
                                     <div class="col-md-6 col-sm-6 ">
                                         <textarea name="address" id="address" class="form-control">{{ old('address', $member->address) }}</textarea>
                                     </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label class="col-form-label col-md-3 col-sm-3 label-align" for="upload-pic">Upload Profile Photo </label>
-                                    <div class="col-md-6 col-sm-6 ">
-                                        <input type="file" name="profile_photo" id="upload-pic" accept="image/*"> 
-                                    </div>
-                                </div>
+                                </div>                                
                                 <div class="row form-group">
                                     <label class="col-form-label col-md-3 col-sm-3 label-align" for="status">Status</label>
                                     <div class="col-md-6 col-sm-6 ">
@@ -168,6 +145,24 @@
                                             <option value="expired" data-month="6" @if($member->status == 'expired') selected="" @endif>Expired</option>
                                         </select>
                                         @error('plan')<span class="error">{{$message}}</span>@enderror
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-form-label col-md-3 col-sm-3 label-align" for="upload-pic">Upload Profile Photo </label>
+                                    <div class="col-md-3 col-sm-3 ">
+                                        <input type="file" name="profile_photo" id="upload-pic" accept="image/*">                                        
+                                    </div>
+                                    <div class="col-md-3 col-sm-3 ">
+                                        <!-- <input type="file" name="profile_photo" id="upload-pic" accept="image/*">  -->
+                                        @if(!empty($member->profile_photo))
+                                        <div class="thumb-pic">
+                                            <img src="{{ asset('/storage/profile_photos/' . $member->profile_photo) }}" class="img-circle profile_img" alt="{{$member->fullname}}">
+                                        </div>
+                                        @else
+                                        <div class="thumb-pic">
+                                            <img src="{{ asset('build/images/profile.png') }}" class="img-circle profile_img" alt="No Image">
+                                        </div>
+                                        @endif
                                     </div>
                                 </div> 
                             </div>
@@ -196,7 +191,7 @@
                                         @foreach($services as $service)
                                         <div class="checkbox">
                                             <label>
-                                                <input type="checkbox" name="services[]" class="flat services" value="{{ $service->id }}" data-amount="{{$service->fee}}" @if(in_array($service->id, $member->service_ids)) checked="" @endif> {{ $service->name }} - <small>{{env('CURRENCY')}}{{$service->fee}}/month</small>
+                                                <input type="checkbox" name="services[]" class="flat services" value="{{ $service->id }}" data-amount="{{$service->fee}}" @if(in_array($service->id, $member->service_ids)) checked="" @endif> {{ $service->name }} - <small>{{config('app.currency')}}{{$service->fee}}/month</small>
                                             </label>
                                         </div>
                                         @endforeach

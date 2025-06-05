@@ -32,7 +32,7 @@ class CreatedMemberFee
             'member_id' => $member->id,
             'original_amount' => $amount,
             'discount_amount' => 0.00,
-            'final_amount' => $amount,
+            'final_amount' => 0.00,
             'payment_status' => 'unpaid',
         ]);
     }

@@ -14,15 +14,15 @@ class ServiceSeeder extends Seeder
     public function run(): void
     {
         $services = [
-            ['name' => 'Personal Training', 'fee' => 50],
-            ['name' => 'Yoga Classes', 'fee' => 25],
-            ['name' => 'Nutrition Consultation', 'fee' => 30],
-            ['name' => 'Zumba Session', 'fee' => 20],
-            ['name' => 'CrossFit Training', 'fee' => 45],
+            ['name' => 'Personal Training', 'fee' => 500],
+            ['name' => 'Yoga Classes', 'fee' => 250],
+            ['name' => 'Nutrition Consultation', 'fee' => 300],
+            ['name' => 'Zumba Session', 'fee' => 200],
+            ['name' => 'CrossFit Training', 'fee' => 450],
         ];
 
         foreach ($services as $service) {
-            Service::create($service);
+            Service::firstOrCreate($service);
         }
     }
 }

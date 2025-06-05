@@ -12,8 +12,8 @@ class MemberFee extends Model
         'discount_amount',
         'final_amount',
         'payment_status',
-        //'payment_date',
-        //'payment_method',
+        'payment_date',
+        'payment_method',
     ];
 
     public function getpaymentstatusBadgeClassAttribute() {

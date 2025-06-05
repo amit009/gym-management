@@ -21,5 +21,13 @@ class AssignRole extends Seeder
         } else {
             echo "User not found\n";
         }
+
+        $user = User::find(2);
+        if ($user) {
+            $user->assignRole('trainer');
+            echo "Role assigned to User ID 2\n";
+        } else {
+            echo "User not found\n";
+        }
     }
 }

@@ -22,12 +22,12 @@ class DatabaseSeeder extends Seeder
             'email' => 'test@example.com',
         ]); */
 
-        Role::create(['name' => 'admin']);
-        Role::create(['name' => 'trainer']);
-        Role::create(['name' => 'member']);
+        Role::firstOrCreate(['name' => 'admin']);
+        Role::firstOrCreate(['name' => 'trainer']);
+        Role::firstOrCreate(['name' => 'member']);
 
-        Permission::create(['name' => 'manage users']);
-        Permission::create(['name' => 'view workouts']);
+        Permission::firstOrCreate(['name' => 'manage users']);
+        Permission::firstOrCreate(['name' => 'view workouts']);
 
         $role = Role::findByName('admin');
         $role->givePermissionTo('manage users');

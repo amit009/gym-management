@@ -3,9 +3,14 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Member;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Trainer extends Model
 {
+    use HasFactory, SoftDeletes;
+    
     protected $fillable = ['first_name', 'last_name', 'email', 'phone', 'gender', 'date_of_birth', 'address', 'specialization', 'profile_photo', 'status'];
     protected $casts = [
         'date_of_birth' => 'date',
@@ -45,8 +50,15 @@ class Trainer extends Model
         return $value === 'active' ? 'Active' : 'Inactive';
     }
     
-    public function setStatusAttribute($value)
+    /* public function setStatusAttribute($value)
     {
         $this->attributes['status'] = $value === 'Active' ? 'active' : 'inactive';
+    } */
+
+    public function getstatusBadgeClassAttribute() {
+        return match ($this->status) {
+            'Active' => 'badge badge-success',
+            'Inactive' => 'badge badge-danger'
+        };
     }
 }
