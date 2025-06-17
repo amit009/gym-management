@@ -38,6 +38,7 @@ class DashboardController extends Controller
       $femaleMembers = \App\Models\Member::where('gender', 'female')->count();
       $activeMembers = \App\Models\Member::where('status', 'active')->count();
       $inactiveMembers = \App\Models\Member::where('status', 'inactive')->count();
+      $expiredMembers = \App\Models\Member::where('status', 'expired')->count();
       
       $services = \App\Models\Service::count();
       $trainers = \App\Models\Trainer::count();
@@ -51,6 +52,7 @@ class DashboardController extends Controller
          'trainers',
          'activeMembers',
          'inactiveMembers',
+         'expiredMembers',
          'users',
       ));
    }

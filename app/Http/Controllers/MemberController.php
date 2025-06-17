@@ -9,18 +9,25 @@ use App\Models\MemberFee;
 use App\Models\Service;
 use App\Models\Trainer;
 use App\Events\MemberCreated;
-use App\Mail\WelcomeEmail;
-use Illuminate\Support\Facades\Mail;
+//use App\Mail\WelcomeEmail;
+//use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use App\Notifications\WelcomeNotification;
 use App\Notifications\SendSmsNotification;
 use Illuminate\View\View;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
+use Carbon\Carbon;
+use App\Http\Requests\MemberRequest;
+use App\Services\MemberEmailService;
+use Illuminate\Validation\ValidationException;
+use Illuminate\Support\Facades\Log;
  
 class MemberController extends Controller
 {
-    public function __construct() {
+    protected $memberEmailService;
+
+    public function __construct(MemberEmailService $memberEmailService) {
         /* $this->middleware(['permission:member index, web'])->only('index');
         $this->middleware(['permission:member create, web'])->only(['create','store']);
         $this->middleware(['permission:member update, web'])->only(['edit','update']);
@@ -30,6 +37,8 @@ class MemberController extends Controller
         $this->middleware('permission:member create')->only(['create','store']);
         $this->middleware('permission:member update')->only(['edit','update']);
         $this->middleware('permission:member delete')->only('destroy');
+
+        $this->memberEmailService = $memberEmailService;
     }
     
     /**
@@ -37,7 +46,14 @@ class MemberController extends Controller
      */
     public function index()
     { 
-        $members = Member::with('memberFees')->latest()->paginate(10);        
+        $today = Carbon::today();
+            $members = Member::with('memberFees')->paginate(10)->through(function ($member) use ($today) {
+                $paymentDate = $member->memberFees?->payment_date ? Carbon::parse($member->memberFees?->payment_date) : null;
+                $member->memberFees->payment_status = empty($paymentDate) || $paymentDate->lt($today) ? 'unpaid' : 'paid';
+                return $member;
+            });
+        
+        //$members = Member::with('memberFees')->latest()->paginate(10);        
         return view('members/index', ['members' => $members]);
     }
 
@@ -58,18 +74,9 @@ class MemberController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(MemberRequest $request)
     {
         try {
-            $request->validate([
-                'first_name' => 'required|string|max:255',
-                'last_name' => 'required|string|max:255',
-                'registration_date' => 'required|date', 
-                'phone' => 'required|string|max:15',
-                'address' => 'required|string|max:255',
-                'services' => 'required|array'
-            ]);
-
             $filename = null;
             if($request->hasFile('profile_photo')){
                 $path = $request->file('profile_photo')->store('profile_photos', 'public');             
@@ -77,7 +84,7 @@ class MemberController extends Controller
                 $filename = basename($path);
             }
 
-            $member = Member::create([
+            $memberData = [
                 'first_name' => $request->first_name,
                 'last_name' => $request->last_name,
                 'email' => $request->email??null,
@@ -95,13 +102,17 @@ class MemberController extends Controller
                 'plan' => $request->plan,
                 'fee' => $request->amount,
                 'profile_photo' => $filename??null,
-            ]);
+            ];
+
+            $member = Member::create($memberData);
 
             // Dispatch the event
             event(new MemberCreated($member));
 
             // Send the welcome email
-            Mail::to($member->email)->queue(new WelcomeEmail($member));
+            $this->memberEmailService->sendMemberWelcomeEmail($member);
+
+            //Mail::to($member->email)->queue(new WelcomeEmail($member));
 
             // Send welcome notification
             //$member->notify(new WelcomeNotification($member));
@@ -148,34 +159,46 @@ class MemberController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(MemberRequest $request, string $id)
     {
         try {
-            $request->validate([
+           /*  $request->validate([
                 'first_name' => 'required|string|max:255',
                 'last_name' => 'required|string|max:255',
                 'registration_date' => 'required|date', 
                 'phone' => 'required|string|max:15',
                 'address' => 'required|string|max:255',
                 'services' => 'required|array',
-                //'profile_photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:5148',
-            ]);
+                'profile_photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:5148',
+            ]); */
 
             $member = Member::findOrFail($id);            
-            \Log::info('profile_photo input:', ['type' => gettype($request->file('profile_photo')), 'value' => $request->file('profile_photo')]);
-
             $filename = $member->profile_photo;
             if ($request->hasFile('profile_photo')) {
                 $uploadedFile = $request->file('profile_photo');
-            
+                
                 if ($uploadedFile->isValid()) {
                     if ($member->profile_photo && Storage::disk('public')->exists('profile_photos/' . $member->profile_photo)) {
                         Storage::disk('public')->delete('profile_photos/' . $member->profile_photo);
                     }
-            
+                    
                     $path = $uploadedFile->store('profile_photos', 'public');
                     $filename = basename($path);
+                } else {
+                    die('sdksdk');
                 }
+
+                $fileOriginalName = $uploadedFile->getClientOriginalName();
+                $fileType = $uploadedFile->getMimeType();
+                $fileExtenion = $uploadedFile->getClientOriginalExtension();
+                $fileSize = $uploadedFile->getSize();                 
+
+                Log::info('profile_photo input:', [
+                    'name' => $fileOriginalName,
+                    'type' => $fileType,
+                    'extension' => $fileExtenion,
+                    'size' => number_format($fileSize/1024, 2) . "kb",
+                ]);
             }          
              
             $member->update([
@@ -200,6 +223,12 @@ class MemberController extends Controller
 
             return redirect()->back()->with('success', 'Successs! Member updated successfully.');
 
+        } catch (ValidationException $e) {
+            Log::error('Validation failed for profile_photo:', $e->errors());
+
+            return redirect()->back()
+                ->withErrors($e->validator)
+                ->withInput();
         } catch (\Throwable $th) {
             return redirect()->back()->with('error', 'Error throw: ' . $th->getMessage()); 
         } catch (\Exception $e) {

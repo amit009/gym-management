@@ -246,7 +246,7 @@
             <div class="col-md-4 col-sm-4 ">
               <div class="x_panel tile fixed_height_320 overflow_hidden">
                 <div class="x_title">
-                  <h2>Device Usage</h2>
+                  <h2>Member's Status</h2>
                   <ul class="nav navbar-right panel_toolbox">
                     <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                     </li>
@@ -266,53 +266,41 @@
                   <table class="" style="width:100%">
                     <tr>
                       <th style="width:37%;">
-                        <p>Top 5</p>
+                        <p>Members</p>
                       </th>
                       <th>
                         <div class="col-lg-7 col-md-7 col-sm-7 ">
-                          <p class="">Device</p>
+                          <p class="">Status</p>
                         </div>
                         <div class="col-lg-5 col-md-5 col-sm-5 ">
-                          <p class="">Progress</p>
+                          <p class="">Count</p>
                         </div>
                       </th>
                     </tr>
                     <tr>
                       <td>
-                        <canvas class="canvasDoughnut" height="140" width="140" style="margin: 15px 10px 10px 0"></canvas>
+                        <canvas id="memberStatusChart" class="canvasDoughnut-1" height="120" width="120" style="margin: 0px 10px 0px 0"></canvas>
                       </td>
                       <td>
                         <table class="tile_info">
                           <tr>
                             <td>
-                              <p><i class="fa fa-square blue"></i>IOS </p>
+                              <p><i class="fa fa-square green"></i>Active </p>
                             </td>
-                            <td>30%</td>
+                            <td>{{$activeMembers}}</td>
                           </tr>
                           <tr>
                             <td>
-                              <p><i class="fa fa-square green"></i>Android </p>
+                              <p><i class="fa fa-square purple"></i>Inactive </p>
                             </td>
-                            <td>10%</td>
+                            <td>{{$inactiveMembers}}</td>
                           </tr>
                           <tr>
                             <td>
-                              <p><i class="fa fa-square purple"></i>Blackberry </p>
+                              <p><i class="fa fa-square red"></i>Expired </p>
                             </td>
-                            <td>20%</td>
-                          </tr>
-                          <tr>
-                            <td>
-                              <p><i class="fa fa-square aero"></i>Symbian </p>
-                            </td>
-                            <td>15%</td>
-                          </tr>
-                          <tr>
-                            <td>
-                              <p><i class="fa fa-square red"></i>Others </p>
-                            </td>
-                            <td>30%</td>
-                          </tr>
+                            <td>{{$expiredMembers}}</td>
+                          </tr> 
                         </table>
                       </td>
                     </tr>
@@ -320,7 +308,6 @@
                 </div>
               </div>
             </div>
-
 
             <div class="col-md-4 col-sm-4 ">
               <div class="x_panel tile fixed_height_320">
@@ -374,3 +361,24 @@
 
           </div>
 </x-app-layout>
+@push('scripts')
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const ctx = document.getElementById("memberStatusChart").getContext("2d");
+  new Chart(ctx, {
+      type: 'pie',
+      data: {
+          labels: ["Active", "Inactive", "Expired"],
+          datasets: [{
+              data: [{{ $activeMembers }}, {{ $inactiveMembers }}, {{ $expiredMembers }}],
+              backgroundColor: ["#1ABB9C", "#9B59B6", "#E74C3C"],
+              hoverBackgroundColor: ["#36CAAB", "#b384c6", "#E95E4F",]
+          }]
+      },
+      options: {
+          responsive: true,
+          legend: { position: 'bottom' }
+      }
+  });
+});
+</script>

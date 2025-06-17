@@ -79,7 +79,7 @@
                         </tbody>
                     </table>
 
-                     
+                     {{$trainers->links()}}
                     </div>
                 </div>
             </div>

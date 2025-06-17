@@ -5,7 +5,7 @@
         </div>
         <div class="title_right">
             <div class="pull-right">
-                <a href="{{ route('member.edit', $member->id) }}" class="btn btn-round btn-primary btn-sm"><i class="fa fa-pencil"></i> Edit</a>
+                <a href="{{ route('member.edit', $member->id) }}" class="btn btn-primary btn-sm"><i class="fa fa-pencil"></i> Edit</a>
             </div>
         </div> 
     </div>

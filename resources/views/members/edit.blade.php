@@ -6,7 +6,7 @@
 
         <div class="title_right">
             <div class="pull-right">
-                <a href="{{ route('members') }}" class="btn btn-round btn-info btn-sm">All Members</a>
+                <a href="{{ route('members') }}" class="btn btn-info btn-sm">All Members</a>
             </div>
         </div>
     </div>

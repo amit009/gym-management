@@ -20,7 +20,7 @@ class TrainerController extends Controller
     public function index()
     {
         //$trainers = Trainer::all();        
-        $trainers = Trainer::withTrashed()->get();       
+        $trainers = Trainer::withTrashed()->paginate(10);       
         return view('trainers/index', ['trainers' => $trainers]);
     }
 

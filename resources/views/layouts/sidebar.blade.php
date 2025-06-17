@@ -11,14 +11,14 @@
         <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
             <div class="menu_section">
                 <ul class="nav side-menu">
-                    <li><a href="{{ route('dashboard') }}"><i class="fa fa-home"></i> Dashboard</a></li>
+                    <li><a href="{{ route('dashboard') }}"><i class="fa fa-tachometer"></i> Dashboard</a></li>
                     <li><a><i class="fa fa-users"></i> Members <span class="fa fa-chevron-down"></span></a>
                         <ul class="nav child_menu">
                             <li><a href="{{ route('members') }}">All Members</a></li>
                             <li><a href="{{ route('member.create') }}">Add Member</a></li>
                         </ul>
                     </li>
-                    <li><a><i class="fa fa-users"></i> Services <span class="fa fa-chevron-down"></span></a>
+                    <li><a><i class="fa fa-th-list"></i> Services <span class="fa fa-chevron-down"></span></a>
                         <ul class="nav child_menu">
                             <li><a href="{{ route('services') }}">All Services</a></li>
                             <li><a href="{{ route('service.create') }}">Add Service</a></li>
@@ -28,6 +28,12 @@
                         <ul class="nav child_menu">
                             <li><a href="{{ route('trainers') }}">All Trainers</a></li>
                             <li><a href="{{ route('trainer.create') }}">Add Trainer</a></li>
+                        </ul>
+                    </li>
+                    <li><a><i class="fa fa-cogs"></i> Gym Equipments <span class="fa fa-chevron-down"></span></a>
+                        <ul class="nav child_menu">
+                            <li><a href="{{ route('equipments.index') }}">All Equipments</a></li>
+                            <li><a href="{{ route('equipments.create') }}">Add New</a></li>
                         </ul>
                     </li>
                     @if(auth()->user()->hasRole('admin'))

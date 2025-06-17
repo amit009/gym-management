@@ -6,7 +6,7 @@
 
         <div class="title_right">
             <div class="pull-right">
-                <a href="{{ route('members') }}" class="btn btn-round btn-info btn-sm">All Members</a>
+                <a href="{{ route('members') }}" class="btn btn-info btn-sm">All Members</a>
             </div>
         </div>
     </div>
@@ -80,7 +80,7 @@
                                     <label class="col-form-label col-md-3 col-sm-3 label-align" for="last-name">Last Name <span class="required">*</span>
                                     </label>
                                     <div class="col-md-6 col-sm-6 ">
-                                        <input type="text" id="last-name" name="last_name" required="required" class="form-control @error('first_name')required-field @enderror">
+                                        <input type="text" id="last-name" name="last_name" required="required" class="form-control @error('last_name')required-field @enderror">
                                         @error('last_name')<span class="error">{{$message}}</span>@enderror
                                     </div>
                                 </div>                                
@@ -148,7 +148,8 @@
                                 <div class="form-group row">
                                     <label class="col-form-label col-md-3 col-sm-3 label-align" for="upload-pic">Upload Profile Photo </label>
                                     <div class="col-md-6 col-sm-6 ">
-                                        <input type="file" name="profile_photo" id="upload-pic" accept="image/*"> 
+                                        <input type="file" name="profile_photo @error('profile_photo')required-field @enderror" id="upload-pic" accept="image/*">
+                                        @error('profile_photo')<span class="error">{{$message}}</span>@enderror 
                                     </div>
                                 </div>                                
                             </div>

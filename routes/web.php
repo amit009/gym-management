@@ -14,6 +14,7 @@ use App\Http\Controllers\UserRoleController;
 use App\Models\User;
 use Illuminate\Support\Facades\View;
 use App\Http\Controllers\RolesPermissionController;
+use App\Http\Controllers\EquipmentController;
 
 /* Route::get('/', function () {
     return view('welcome');
@@ -97,6 +98,10 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/role/edit/{id}', [RolesPermissionController::class, 'edit'])->name('role.edit');
     Route::put('/role/update/{id}', [RolesPermissionController::class, 'update'])->name('role.update');
     Route::delete('/role/delete/{id}', [RolesPermissionController::class, 'destroy'])->name('role.delete');
+    
+    
+    /* Equipment routes */
+    Route::resource('equipments', EquipmentController::class);
 });
 
 /* Route::get('/send-mail', function () {

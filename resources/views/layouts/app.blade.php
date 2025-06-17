@@ -41,11 +41,11 @@
 
         </div>
     </div>
+    @livewireScripts
     <!-- Scripts -->
     <script src="{{ asset('vendors/jquery/dist/jquery.min.js') }}"></script>
     <script src="{{ asset('vendors/bootstrap/dist/js/bootstrap.bundle.min.js') }}"></script>
     
-    @livewireScripts
     <!-- NProgress -->
     <script src="{{ asset('vendors/nprogress/nprogress.js') }}"></script>
 

@@ -6,7 +6,7 @@
 
         <div class="title_right">
             <div class="pull-right">
-            <a href="{{ route('member.create') }}" class="btn btn-round btn-primary btn-sm"><i class="fa fa-plus"></i> New</a>
+            <a href="{{ route('member.create') }}" class="btn btn-primary btn-sm"><i class="fa fa-plus"></i> New</a>
             </div>
         </div>
     </div>

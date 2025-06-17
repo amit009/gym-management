@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\Trainer;
+use App\Models\Equipment;
 
 class TrainerSeeder extends Seeder
 {
@@ -45,5 +46,6 @@ class TrainerSeeder extends Seeder
         } */
 
         Trainer::factory()->count(10)->create();
+        Equipment::factory()->count(10)->create();
     }
 }

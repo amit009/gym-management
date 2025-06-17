@@ -1,8 +1,8 @@
 <table class="table table-striped jambo_table bulk_action members-table">
     <thead>
         <tr>
-            <th class="column-title">ID</th>
-            
+            <th class="column-title">ID</th>            
+            <th class="column-title">Pic</th>           
             <th class="column-title">Name</th>
             <th class="column-title">Phone</th>
             <th class="column-title">Email</th>
@@ -22,6 +22,15 @@
             @foreach($members as $member)
                 <tr>
                     <td scope="row">{{$member->id}}</td>                    
+                    <td scope="row">
+                        <div class="profile-pic">                                         
+                            @if(!empty($member->profile_photo))
+                            <img src="{{ asset('/storage/profile_photos/' . $member->profile_photo) }}" class="img-circle profile-img" alt="{{$member->fullname}}">
+                            @else
+                            <img src="{{ asset('build/images/profile.png') }}" class="img-circle profile-img" alt="No Image">
+                            @endif
+                        </div> 
+                    </td>                    
                     <td><a href="{{ route('member.view', $member->id) }}">{{ $member->first_name }} {{ $member->last_name }}</a></td>
                     <td>{{ $member->phone }}</td>                                     
                     <td>{{ $member->email }}</td>                                     
@@ -38,8 +47,8 @@
                             'pending' => 'badge badge-warning',
                             default => 'badge badge-secondary',
                         };
-                    @endphp      
-                        <span class="{{$badgeClass}}">{{ ucfirst($payment_status ?? 'N/A') }}</span>
+                    @endphp
+                    <span class="{{$badgeClass}}">{{ ucfirst($payment_status ?? 'N/A') }}</span>
                     </td>
                     <td>
                     {{ $member->reminder }}
